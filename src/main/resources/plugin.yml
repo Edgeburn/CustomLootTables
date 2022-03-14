@@ -1,0 +1,15 @@
+name: CustomLootTables
+version: '${project.version}'
+main: com.edgeburnmedia.customloottables.CustomLootTables
+api-version: 1.18
+permissions:
+  customloot.debug:
+    default: op
+    description: When debug=true in the plugin config, all players with this permission will recieve debug messages
+  customloot.edit:
+    default: op
+    description: Permission to use the loot table editing features
+  customloot.get:
+    default: true
+    description: Permission to recieve custom loot in chests and mob drops. Without this permission, the vanilla loot tables will still be applied
+
