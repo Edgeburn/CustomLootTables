@@ -16,10 +16,10 @@ public final class CustomLootTables extends JavaPlugin {
 	 * RNG used throughout the plugin to avoid creating a new Random every time.
 	 */
 	public static final Random random = new Random();
+	private static final int BSTATS_PLUGIN_ID = 14627;
 	private final NamespacedKey customLootTablesNamespace = new NamespacedKey(this, "custom_loot_tables");
 	private CLTManager lootManager;
 	private DebuggingLogger debuggingLogger;
-	private static final int BSTATS_PLUGIN_ID = 14627;
 
 	@Override
 	public void onEnable() {

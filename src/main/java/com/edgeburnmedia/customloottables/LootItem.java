@@ -1,6 +1,5 @@
 package com.edgeburnmedia.customloottables;
 
-import com.edgeburnmedia.customloottables.utils.CLTUtilities;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -8,10 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
- *
  * @author Edgeburn Media
  */
 public class LootItem {
@@ -19,25 +19,14 @@ public class LootItem {
 	private final UUID uuid;
 	private double chance;
 	private ItemStack itemStack;
-	private int minStackSize;
-	private int maxStackSize;
+	private int stackSize;
 
 
-	public double getChance() {
-		return chance;
+	public LootItem(CustomLootTables plugin, ItemStack itemStack, double chance, int stackSize) {
+		this(plugin, itemStack, chance, stackSize, UUID.randomUUID());
 	}
 
-	/**
-	 * Get the {@link ItemStack}. <br><br>
-	 * <b style="color:orange;">IMPORTANT: Do not use this method for getting the item based on a random chance.</b><br>
-	 *
-	 * @return The item for this {@link LootItem}
-	 */
-	public ItemStack getItemStack() {
-		return itemStack;
-	}
-
-	public LootItem(CustomLootTables plugin, ItemStack itemStack, double chance, int minStackSize, int maxStackSize) {
+	public LootItem(CustomLootTables plugin, ItemStack itemStack, double chance, int stackSize, UUID uuid) {
 		this.plugin = plugin;
 		this.uuid = UUID.randomUUID();
 		this.itemStack = itemStack;
@@ -48,82 +37,14 @@ public class LootItem {
 			this.chance = 0.0;
 		}
 
-		if (validateStackSize(minStackSize)) {
-			this.minStackSize = minStackSize;
-		} else {
-			this.plugin.getLogger().warning("An out of range value for minStackSize (" + minStackSize + ") was specified. Setting to 0");
-			this.minStackSize = 0;
-		}
-		if (validateStackSize(maxStackSize)) {
-			this.maxStackSize = maxStackSize;
-		} else {
-			this.plugin.getLogger().warning("An out of range value for maxStackSize (" + maxStackSize + ") was specified. Setting to 0");
-			this.maxStackSize = 0;
-
+		if (validateStackSize(stackSize)) {
+			this.stackSize = stackSize;
 		}
 
 	}
 
 	public LootItem(CustomLootTables plugin, ItemStack itemStack, double chance) {
-		this(plugin, itemStack, chance, 0, 0);
-	}
-
-	public void setChance(double chance) {
-		this.chance = chance;
-	}
-
-	public void setItemStack(ItemStack itemStack) {
-		this.itemStack = itemStack;
-	}
-
-	/**
-	 * Based on the percentage chance of {@link LootItem#chance}, either get the {@link ItemStack} represented within
-	 * this {@link LootItem}, or null, meaning the item will not be part of the loot generated
-	 *
-	 * @return The item or null
-	 */
-	public ItemStack getRandomly() {
-		double gennedNum = CustomLootTables.random.nextDouble();
-		plugin.getDebuggingLogger().log("generated " + String.format("%.2f", gennedNum), "chance " + getChance());
-		if (gennedNum <= getChance()) {
-			plugin.getDebuggingLogger().log("item "  + getItemStack().getType() + " was generated");
-			ItemStack i = itemStack;
-			i.setAmount(randomStackSize());
-			return i;
-		} else {
-			plugin.getDebuggingLogger().log("item " + getItemStack().getType() + " was not generated");
-			return null;
-		}
-	}
-
-	private int randomStackSize() {
-		if (getMinStackSize() < 1 && getMaxStackSize() < 1) {
-			return 1;
-		} else {
-			if (getMinStackSize() < 1) {
-				setMinStackSize(1);
-			}
-			if (getMinStackSize() < 1) {
-				setMaxStackSize(1);
-			}
-			return CLTUtilities.getRandomNumber(getMinStackSize(), getMaxStackSize());
-		}
-	}
-
-	public int getMinStackSize() {
-		return minStackSize;
-	}
-
-	public void setMinStackSize(int minStackSize) {
-		this.minStackSize = minStackSize;
-	}
-
-	public int getMaxStackSize() {
-		return maxStackSize;
-	}
-
-	public void setMaxStackSize(int maxStackSize) {
-		this.maxStackSize = maxStackSize;
+		this(plugin, itemStack, chance, 1);
 	}
 
 	/**
@@ -146,6 +67,48 @@ public class LootItem {
 		return i <= 64 && i >= 0;
 	}
 
+	public double getChance() {
+		return chance;
+	}
+
+	public void setChance(double chance) {
+		this.chance = chance;
+	}
+
+	/**
+	 * Get the {@link ItemStack}. <br><br>
+	 * <b style="color:orange;">IMPORTANT: Do not use this method for getting the item based on a random chance.</b><br>
+	 *
+	 * @return The item for this {@link LootItem}
+	 */
+	public ItemStack getItemStack() {
+		return itemStack;
+	}
+
+	public void setItemStack(ItemStack itemStack) {
+		this.itemStack = itemStack;
+	}
+
+	/**
+	 * Based on the percentage chance of {@link LootItem#chance}, either get the {@link ItemStack} represented within
+	 * this {@link LootItem}, or null, meaning the item will not be part of the loot generated
+	 *
+	 * @return The item or null
+	 */
+	public ItemStack getRandomly() {
+		double gennedNum = CustomLootTables.random.nextDouble();
+		plugin.getDebuggingLogger().log("generated " + String.format("%.2f", gennedNum), "chance " + getChance());
+		if (gennedNum <= getChance()) {
+			plugin.getDebuggingLogger().log("item " + getItemStack().getType() + " was generated");
+			ItemStack i = itemStack;
+			i.setAmount(stackSize);
+			return i;
+		} else {
+			plugin.getDebuggingLogger().log("item " + getItemStack().getType() + " was not generated");
+			return null;
+		}
+	}
+
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -161,11 +124,13 @@ public class LootItem {
 		private String itemLore;
 		private HashMap<Enchantment, Integer> enchants = new HashMap<>();
 		private ItemFlag[] flags;
+		private boolean unbreakable;
+		private UUID uuid;
 
 		/**
 		 * Begin constructing a new {@link LootItem}, starting with the item's {@link Material}
-		 * 
-		 * @param plugin Plugin reference
+		 *
+		 * @param plugin   Plugin reference
 		 * @param material Material the item should be made from
 		 */
 		public LootItemBuilder(CustomLootTables plugin, Material material) {
@@ -192,8 +157,8 @@ public class LootItem {
 		/**
 		 * Set the chance that the item will appear in a given loot generation
 		 *
-		 * @param chance Percentage chance the item will appear represented by a number from 0.0-1.0, with 0.0 meaning 
-		 *               the item will never appear, and 1.0 meaning the item will always appear.      
+		 * @param chance Percentage chance the item will appear represented by a number from 0.0-1.0, with 0.0 meaning
+		 *               the item will never appear, and 1.0 meaning the item will always appear.
 		 */
 		public LootItemBuilder chance(double chance) {
 			if (LootItem.validateChance(chance)) {
@@ -212,6 +177,32 @@ public class LootItem {
 		 */
 		public LootItemBuilder itemName(String name) {
 			this.itemName = name;
+			return this;
+		}
+
+		/**
+		 * Set whether the item should be unbreakable or not
+		 */
+		public LootItemBuilder setUnbreakable(boolean unbreakable) {
+			this.unbreakable = unbreakable;
+			return this;
+		}
+
+		/**
+		 * Set the {@link LootItem}'s {@link UUID}. The UUID is used to reference an existing entry in
+		 * {@code custom_items.yml}. If this item is being built from data read from {@code custom_items.yml}, the UUID
+		 * should be specified from said data. If it is a new item, pass {@code null} as the argument for this method.
+		 * <br>
+		 * When {@code null} is passed, the UUID is set to a new randomly generated UUID.
+		 *
+		 * @param uuid The UUID of an existing entry, or {@code null} if a new item
+		 */
+		public LootItemBuilder setUUID(@Nullable UUID uuid) {
+			if (uuid == null) {
+				this.uuid = UUID.randomUUID();
+			} else {
+				this.uuid = uuid;
+			}
 			return this;
 		}
 
@@ -245,9 +236,9 @@ public class LootItem {
 		 * one
 		 *
 		 * @param enchantment The enchantment type
-		 * @param level The enchantment's level. In Minecraft versions >=1.17 this can be no higher than 255, however
-		 *              this will not be enforced by the plugin as the game reverts all enchantment levels above this
-		 *              to 255 on its own
+		 * @param level       The enchantment's level. In Minecraft versions >=1.17 this can be no higher than 255, however
+		 *                    this will not be enforced by the plugin as the game reverts all enchantment levels above this
+		 *                    to 255 on its own
 		 */
 		public LootItemBuilder addEnchant(Enchantment enchantment, int level) {
 			enchants.put(enchantment, level);
@@ -257,7 +248,7 @@ public class LootItem {
 		/**
 		 * Build the finalized {@link LootItem}
 		 *
-		 * @return
+		 * @return The loot item
 		 */
 		public LootItem build() {
 			ItemMeta meta = this.itemStack.getItemMeta();
@@ -270,8 +261,11 @@ public class LootItem {
 			}
 
 			meta.addItemFlags(flags);
+			meta.setUnbreakable(unbreakable);
 
+			itemStack.setItemMeta(meta);
 
+			return new LootItem(plugin, itemStack, chance, itemStack.getAmount(), uuid);
 		}
 
 	}

@@ -19,8 +19,8 @@ import java.util.Collection;
  */
 public class CLTListeners implements Listener {
 	private final CustomLootTables plugin;
-	private CLTManager lootManager;
 	private final DebuggingLogger debuggingLogger;
+	private CLTManager lootManager;
 
 	public CLTListeners(CustomLootTables plugin, CLTManager lootManager) {
 		this.plugin = plugin;
