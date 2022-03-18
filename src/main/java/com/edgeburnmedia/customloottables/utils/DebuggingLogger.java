@@ -1,4 +1,6 @@
-package com.edgeburnmedia.customloottables;
+package com.edgeburnmedia.customloottables.utils;
+
+import com.edgeburnmedia.customloottables.CustomLootTables;
 
 public class DebuggingLogger {
 	private final CustomLootTables plugin;

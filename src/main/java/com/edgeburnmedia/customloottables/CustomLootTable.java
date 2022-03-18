@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTable;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -17,6 +18,7 @@ public class CustomLootTable implements LootTable {
 	private final CustomLootTables plugin;
 	private final UUID uuid;
 	private ArrayList<LootItem> loot = new ArrayList<>();
+	private String replaces;
 
 	public CustomLootTable(CustomLootTables plugin, LootItem... loot) {
 		this(plugin, UUID.randomUUID(), loot);
@@ -35,6 +37,19 @@ public class CustomLootTable implements LootTable {
 		this.plugin = plugin;
 		this.loot.addAll(Arrays.asList(loot));
 		this.uuid = uuid;
+	}
+
+	public CustomLootTables getPlugin() {
+		return plugin;
+	}
+
+	public @Nullable
+	String getReplaces() {
+		return replaces;
+	}
+
+	public void setReplaces(@Nullable String replaces) {
+		this.replaces = replaces;
 	}
 
 	@Override
@@ -91,7 +106,7 @@ public class CustomLootTable implements LootTable {
 
 		return lootItems;
 	}
-
+	
 	/**
 	 * Merge existing generated loot with the loot of this {@link CustomLootTable}.<br><br>
 	 * Should be used for generating mob drop loot.

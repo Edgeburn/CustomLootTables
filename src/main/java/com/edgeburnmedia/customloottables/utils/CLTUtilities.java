@@ -29,6 +29,13 @@ public class CLTUtilities {
 		return resultingLootTables;
 	}
 
+	/**
+	 * Get a random {@code int} within a given range
+	 *
+	 * @param min Minimum number
+	 * @param max Maximum number
+	 * @return The number randomly generated
+	 */
 	public static int getRandomNumber(int min, int max) {
 		return (int) ((Math.random() * (max - min)) + min);
 	}
