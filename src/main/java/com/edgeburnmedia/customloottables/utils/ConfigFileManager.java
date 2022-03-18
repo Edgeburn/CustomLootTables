@@ -42,7 +42,7 @@ public abstract class ConfigFileManager<T> {
 	}
 
 	/**
-	 * Read the configuration file, and interpret it's contents as a HashMap of {@link T} objects corresponding to UUIDs
+	 * Read the configuration file, and interpret its contents as a HashMap of {@link T} objects corresponding to UUIDs
 	 */
 	public abstract void reloadConfig();
 
@@ -72,11 +72,11 @@ public abstract class ConfigFileManager<T> {
 	/**
 	 * Delete an existing entry, and then replace it with a new one.
 	 *
-	 * @param uuid
-	 * @param entry
+	 * @param uuid  The UUID of the entry to replace
+	 * @param entry The replacement entry
 	 */
 	public void replaceEntry(UUID uuid, T entry) {
-		removeEntry(uuid);
+//		removeEntry(uuid);
 		addEntry(uuid, entry);
 	}
 
@@ -173,8 +173,15 @@ public abstract class ConfigFileManager<T> {
 	 * @param uuid The UUID of the entry to remove
 	 */
 	public void removeEntry(UUID uuid) {
-		entries.remove(uuid);
-		getConfiguration().set(uuid.toString(), null);
+		HashMap<UUID, T> entriesCopy = new HashMap<>(entries);
+		entriesCopy.remove(uuid);
+		entries.clear();
+		getConfigFile().delete();
+		createCustomConfig(getFileName());
+
+		for (UUID u : entriesCopy.keySet()) {
+			addEntry(u, entriesCopy.get(u));
+		}
 
 		try {
 			getConfiguration().save(getConfigFile());

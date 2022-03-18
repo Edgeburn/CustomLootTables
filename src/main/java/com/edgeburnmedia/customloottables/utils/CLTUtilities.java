@@ -1,13 +1,11 @@
 package com.edgeburnmedia.customloottables.utils;
 
 import org.bukkit.block.Chest;
+import org.bukkit.entity.EntityType;
 import org.bukkit.loot.LootTable;
 import org.bukkit.loot.LootTables;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class CLTUtilities {
 	public static <T> Collection<T> convertArrayListToCollection(List<T> arr) {
@@ -38,5 +36,38 @@ public class CLTUtilities {
 	 */
 	public static int getRandomNumber(int min, int max) {
 		return (int) ((Math.random() * (max - min)) + min);
+	}
+
+	public static Set<String> getReplaceables() {
+		Set<String> replaceables = new HashSet<>();
+
+		replaceables.add("*");
+		replaceables.add("NONE");
+
+		replaceables.addAll(getReplaceableMobLoot());
+		replaceables.addAll(getReplaceableChestLoot());
+
+		return replaceables;
+	}
+
+	public static Set<String> getReplaceableChestLoot() {
+		Set<String> replaceables = new HashSet<>();
+		ArrayList<String> chestLootTables = new ArrayList<>();
+		for (LootTables table : LootTables.values()) {
+			chestLootTables.add(table.name().toUpperCase(Locale.ROOT));
+		}
+		replaceables.addAll(chestLootTables);
+		return replaceables;
+	}
+
+	public static Set<String> getReplaceableMobLoot() {
+		Set<String> replaceables = new HashSet<>();
+
+		ArrayList<String> entities = new ArrayList<>();
+		for (EntityType type : EntityType.values()) {
+			entities.add(type.name().toUpperCase(Locale.ROOT));
+		}
+		replaceables.addAll(entities);
+		return replaceables;
 	}
 }

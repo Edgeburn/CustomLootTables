@@ -41,6 +41,10 @@ public class CLTCommands implements CommandExecutor {
 						sender.sendMessage("§cGUI editor is being used by another player. Please wait for them to finish before using the GUI to prevent conflicts.");
 					}
 					return true;
+				case "version":
+					String version = plugin.toString();
+					sender.sendMessage(version);
+					return true;
 				case "table":
 					switch (args[1]) {
 						case "create":

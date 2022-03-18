@@ -28,7 +28,7 @@ public class CLTCommandTabCompletion implements TabCompleter {
 			if (args.length == 1) {
 				commands.add("registerhand");
 				commands.add("gui");
-				commands.add("table");
+				commands.add("version");
 				StringUtil.copyPartialMatches(args[0], commands, completions);
 			} else if (args.length == 2) {
 				switch (args[0]) {

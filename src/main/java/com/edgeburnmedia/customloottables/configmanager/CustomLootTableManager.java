@@ -82,7 +82,7 @@ public class CustomLootTableManager extends ConfigFileManager<CustomLootTable> {
 				continue;
 			}
 
-			if (check.getReplaces().equalsIgnoreCase(original)) {
+			if (check.getReplaces().equalsIgnoreCase(original) || check.getReplaces().equalsIgnoreCase("*")) {
 				return check;
 			}
 		}
