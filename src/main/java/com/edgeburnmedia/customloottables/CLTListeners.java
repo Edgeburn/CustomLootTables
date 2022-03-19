@@ -6,6 +6,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootTable;
@@ -44,6 +45,14 @@ public class CLTListeners implements Listener {
 			event.getDrops().clear();
 			event.getDrops().addAll(mergedLoot);
 			debuggingLogger.log("finished loot generation. " + event.getDrops().size() + " loot items generated");
+		}
+	}
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent e) {
+		// this listener is only used to inform the user if there is an update available
+		if (plugin.isUpdateAvailable()) {
+			e.getPlayer().sendMessage("§6A new Custom Loot Tables update is available! Download it at " + plugin.getUpdateURL());
 		}
 	}
 

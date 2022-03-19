@@ -6,7 +6,7 @@
 
     <groupId>com.edgeburnmedia</groupId>
     <artifactId>CustomLootTables</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>CustomLootTables</name>
@@ -33,6 +33,10 @@
                 <version>3.3.0-SNAPSHOT</version>
                 <configuration>
                     <relocations>
+                        <relocation>
+                            <pattern>org.json</pattern>
+                            <shadedPattern>com.edgeburnmedia.customloottables</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>com.edgeburnmedia.customloottables</shadedPattern>
@@ -92,6 +96,11 @@
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
             <version>0.10.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20211205</version>
         </dependency>
     </dependencies>
 
