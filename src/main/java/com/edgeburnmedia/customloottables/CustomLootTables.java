@@ -49,7 +49,7 @@ public final class CustomLootTables extends JavaPlugin {
 		gui = new CustomLootTablesGUI(this);
 		getCommand("editloottable").setExecutor(new CLTCommands(this));
 		getCommand("editloottable").setTabCompleter(new CLTCommandTabCompletion(this));
-		getServer().getPluginManager().registerEvents(new CLTListeners(this, lootManager), this);
+		getServer().getPluginManager().registerEvents(new CLTListeners(this), this);
 		saveDefaultConfig();
 	}
 

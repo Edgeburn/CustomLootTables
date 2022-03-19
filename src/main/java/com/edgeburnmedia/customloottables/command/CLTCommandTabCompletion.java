@@ -1,6 +1,7 @@
 package com.edgeburnmedia.customloottables.command;
 
 import com.edgeburnmedia.customloottables.CustomLootTables;
+import com.edgeburnmedia.customloottables.utils.CLTUtilities;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class CLTCommandTabCompletion implements TabCompleter {
 	private final CustomLootTables plugin;
 
@@ -32,7 +34,7 @@ public class CLTCommandTabCompletion implements TabCompleter {
 				StringUtil.copyPartialMatches(args[0], commands, completions);
 			} else if (args.length == 2) {
 				switch (args[0]) {
-					case "registerhand":
+					case "registerhand" -> {
 						for (int i = 0; i < 10; i++) {
 							commands.add("0.0" + i);
 						}
@@ -40,46 +42,43 @@ public class CLTCommandTabCompletion implements TabCompleter {
 							commands.add("0." + i);
 						}
 						StringUtil.copyPartialMatches(args[1], commands, completions);
-
-						break;
-					case "table":
+					}
+					case "table" -> {
 						commands.add("create");
 						commands.add("replaces");
 						commands.add("additem");
 						commands.add("removeitem");
 						commands.add("delete");
 						StringUtil.copyPartialMatches(args[1], commands, completions);
-						break;
-					default:
-						break;
+					}
+					default -> {
+					}
 				}
 			} else if (args.length == 3) {
 				switch (args[1]) {
-					case "replaces":
+					case "replaces" -> {
 						commands.addAll(plugin.getLootManager().getConfiguration().getKeys(false));
 						StringUtil.copyPartialMatches(args[2], commands, completions);
-						break;
-					case "removeitem":
-					case "additem":
+					}
+					case "removeitem", "additem" -> {
 						Player player = (Player) sender;
 						player.sendTitle("§2Loot Table UUID", "", 1, 100, 1);
 						commands.addAll(plugin.getLootManager().getConfiguration().getKeys(false));
 						StringUtil.copyPartialMatches(args[2], commands, completions);
-						break;
+					}
 				}
 			} else if (args.length == 4) {
 				switch (args[1]) {
-					case "additem":
-					case "removeitem":
+					case "additem", "removeitem" -> {
 						Player player = (Player) sender;
 						player.sendTitle("§2Loot Item UUID", "", 1, 100, 1);
 						commands.addAll(plugin.getCustomItemManager().getConfiguration().getKeys(false));
 						StringUtil.copyPartialMatches(args[3], commands, completions);
-						break;
-					case "replaces":
-						// TODO add replaceable loot table tab completion suggestions
-						commands.add("TODO!!!");
+					}
+					case "replaces" -> {
+						commands.addAll(CLTUtilities.getReplaceables());
 						StringUtil.copyPartialMatches(args[3], commands, completions);
+					}
 				}
 
 			}

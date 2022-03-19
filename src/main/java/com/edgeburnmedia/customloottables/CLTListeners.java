@@ -1,9 +1,7 @@
 package com.edgeburnmedia.customloottables;
 
-import com.edgeburnmedia.customloottables.configmanager.CustomLootTableManager;
 import com.edgeburnmedia.customloottables.utils.CLTUtilities;
 import com.edgeburnmedia.customloottables.utils.DebuggingLogger;
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,11 +22,9 @@ import java.util.Collection;
 public class CLTListeners implements Listener {
 	private final CustomLootTables plugin;
 	private final DebuggingLogger debuggingLogger;
-	private CustomLootTableManager lootManager;
 
-	public CLTListeners(CustomLootTables plugin, CustomLootTableManager lootManager) {
+	public CLTListeners(CustomLootTables plugin) {
 		this.plugin = plugin;
-		this.lootManager = lootManager;
 		this.debuggingLogger = plugin.getDebuggingLogger();
 	}
 
@@ -66,21 +62,4 @@ public class CLTListeners implements Listener {
 		event.setLoot(Arrays.asList(newLoot));
 		debuggingLogger.log("finished loot generation. " + event.getLoot().size() + " loot items generated");
 	}
-
-	/**
-	 * Preset {@link CustomLootTable} for debug purposes. Has a 50% chance to give a Dead Bush
-	 *
-	 * @return The loot table
-	 * @deprecated TODO remove in final version
-	 */
-	@Deprecated
-	public CustomLootTable getDebugLootTable() {
-		debuggingLogger.log("using temporary custom loot table!");
-		CustomLootTable customLootTable;
-		LootItem l = new LootItem(plugin, new ItemStack(Material.DEAD_BUSH), 0.5);
-		LootItem l2 = new LootItem(plugin, new ItemStack(Material.BRICK), 0.8);
-		customLootTable = new CustomLootTable(plugin, l, l2);
-		return customLootTable;
-	}
-
 }

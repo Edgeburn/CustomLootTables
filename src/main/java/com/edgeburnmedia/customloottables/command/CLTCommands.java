@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class CLTCommands implements CommandExecutor {
 	private final CustomLootTables plugin;
 

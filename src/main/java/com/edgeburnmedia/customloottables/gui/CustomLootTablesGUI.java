@@ -21,47 +21,10 @@ import java.util.*;
 
 public class CustomLootTablesGUI {
 	private final CustomLootTables plugin;
-	private final GuiItem tablesButton;
-	private final GuiItem customItemsButton;
-	private StaticPane mainPane;
-	private ChestGui mainMenu;
 
 
 	public CustomLootTablesGUI(CustomLootTables pl) {
 		this.plugin = pl;
-		tablesButton = new GuiItem(getCustomLootTablesButton());
-		tablesButton.setAction(inventoryClickEvent -> {
-			Player player = (Player) inventoryClickEvent.getWhoClicked();
-			clickSound(player);
-			inventoryClickEvent.setCancelled(true);
-		});
-		customItemsButton = new GuiItem(getCustomItemsButton());
-		customItemsButton.setAction(inventoryClickEvent -> {
-			Player player = (Player) inventoryClickEvent.getWhoClicked();
-			player.sendMessage("edit items");
-			clickSound(player);
-			inventoryClickEvent.setCancelled(true);
-		});
-		mainMenu = new ChestGui(4, "Loot Editor");
-
-		mainPane = new StaticPane(2, 1);
-		mainPane.addItem(tablesButton, 0, 0);
-		mainPane.addItem(customItemsButton, 1, 0);
-		mainMenu.addPane(mainPane);
-
-		mainMenu.setOnClose(inventoryCloseEvent -> {
-			plugin.setLocked(false);
-			plugin.getDebuggingLogger().log("unlocked gui");
-		});
-
-	}
-
-	private static ItemStack getCustomLootTablesButton() {
-		ItemStack stack = new ItemStack(Material.CHEST);
-		ItemMeta meta = stack.getItemMeta();
-		meta.setDisplayName("§6§lLoot Tables");
-		stack.setItemMeta(meta);
-		return stack;
 	}
 
 	private static ItemStack getAcceptButton(String s) {
@@ -76,14 +39,6 @@ public class CustomLootTablesGUI {
 		ItemStack stack = new ItemStack(Material.BARRIER);
 		ItemMeta meta = stack.getItemMeta();
 		meta.setDisplayName("§c§l" + s);
-		stack.setItemMeta(meta);
-		return stack;
-	}
-
-	private static ItemStack getCustomItemsButton() {
-		ItemStack stack = new ItemStack(Material.DIAMOND);
-		ItemMeta meta = stack.getItemMeta();
-		meta.setDisplayName("§6§lItems");
 		stack.setItemMeta(meta);
 		return stack;
 	}

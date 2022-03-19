@@ -51,23 +51,19 @@ public class CLTUtilities {
 	}
 
 	public static Set<String> getReplaceableChestLoot() {
-		Set<String> replaceables = new HashSet<>();
 		ArrayList<String> chestLootTables = new ArrayList<>();
 		for (LootTables table : LootTables.values()) {
 			chestLootTables.add(table.name().toUpperCase(Locale.ROOT));
 		}
-		replaceables.addAll(chestLootTables);
-		return replaceables;
+		return new HashSet<>(chestLootTables);
 	}
 
 	public static Set<String> getReplaceableMobLoot() {
-		Set<String> replaceables = new HashSet<>();
 
 		ArrayList<String> entities = new ArrayList<>();
 		for (EntityType type : EntityType.values()) {
 			entities.add(type.name().toUpperCase(Locale.ROOT));
 		}
-		replaceables.addAll(entities);
-		return replaceables;
+		return new HashSet<>(entities);
 	}
 }

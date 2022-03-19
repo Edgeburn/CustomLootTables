@@ -22,6 +22,7 @@ public abstract class ConfigFileManager<T> {
 	private final String fileName;
 	private FileConfiguration configuration;
 	private File configFile;
+	@SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
 	private HashMap<UUID, T> entries = new HashMap<>();
 
 	public ConfigFileManager(CustomLootTables plugin, String fileName) {

@@ -23,9 +23,9 @@ public class CustomItemManager extends ConfigFileManager<LootItem> {
 		getAllEntries().clear();
 		String[] keys = getConfiguration().getKeys(false).toArray(new String[0]);
 
-		for (int i = 0; i < keys.length; i++) {
+		for (String key : keys) {
 			LootItem lootItem;
-			String uuid = keys[i];
+			String uuid = key;
 			ItemStack stack = getConfiguration().getItemStack(uuid + ".itemstack");
 			double chance = getConfiguration().getDouble(uuid + ".chance");
 			lootItem = new LootItem(getPlugin(), stack, chance, 1, UUID.fromString(uuid));

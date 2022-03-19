@@ -31,8 +31,7 @@ public class CustomLootTableManager extends ConfigFileManager<CustomLootTable> {
 		getAllEntries().clear();
 		String[] keys = getConfiguration().getKeys(false).toArray(new String[0]);
 
-		for (int i = 0; i < keys.length; i++) {
-			String uuid = keys[i];
+		for (String uuid : keys) {
 			CustomLootTable newTable;
 
 			List<String> lootItemUUIDs = getConfiguration().getStringList(uuid + ".item_pool");
