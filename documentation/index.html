@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CustomLootTables Documentation • Edgeburn Media</title>
+	<link rel="stylesheet" href="style.css" />
+	<script src="script.js"></script>
+</head>
+<body>
+	<div class="heading">
+		<table>
+			<tr>
+				<td><h1 class="header">CustomLootTables</h1></td>
+				<td>
+					<div class="justify-me-right">
+						<a
+						id="download-button"
+						href="https://edgeburnmedia.com/fiverr_plugins/custom_loot_tables/CustomLootTables.jar"
+						>Download</a
+						>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="article">
+		<p>
+			<h2 class="header">
+				Loot items
+			</h2>
+			In order to add any given items to a loot table, they must first be registered as a Loot Item. This is what allows the items to have their metadata (such as names, enchants, lore, and other NBT data) preserved, as well as to set the chance that an item will appear as a percentage. This percentage is input as a number from 0.0 to 1.0, such that 75% would be input as 0.75. Any given item can be registered multiple times with different chances, to allow for scenarios where an item has a different chance of appearing depending on the loot table (<button onclick="makeVisible('different-loot-tables-example')">Show example</button>)
+			<div class="example" id="different-loot-tables-example">
+				<h4 class="header">Example</h4>
+				<p>
+					A creeper should have a 50% chance to drop a diamond, and a villager should have a 10% chance to drop a diamond.
+					This scenario would require you to register a diamond Loot Item twice, once with 50% chance, and another with 10% chance. These would then be separately added to the <code>CREEPER</code> and <code>VILLAGER</code> loot tables
+				</p>
+			</div>
+			<br>
+		</p>
+		<h3 class="header">Registering loot items</h3>
+		<p>
+			Registering a new loot item is very simple. First, get the item you wish to add, and hold it in your main hand in-game. Then, run the command <code>/editloottable registeritem [chance]</code>, where <code>chance</code> is a number from 0.0 to 1.0 with the chance that the item will appear when generating it in a loot table. <br><br>
+			<i>Note: Registering an item does NOT make it begin generating. It must first be added to a loot table. See <a href="#Add new loot table items">Add new loot table items</a> to learn how to create a loot table and add a loot item. The permission node <code>customloot.edit</code> is required to register an item.</i>
+		</p>
+		<p>
+			<h2 class="header">Accessing the GUI</h2>
+			You can access the GUI by running the command <code>/editloottable gui</code>. <button onclick="makeVisible('gui-legend')">Show legend</button>
+			<div class="example" id="gui-legend">
+				<h3 class="header">Legend</h3>
+				<img src="loottables_menu.png" alt="GUI legend" id="gui-legend-img">
+				<p>
+					<p style="color: red;">Loot table selection area</p>
+					<p style="color: yellow;">Page selection buttons</p>
+					<p style="color: rgb(32, 255, 255);">Create new loot table button</p>
+				</p>
+			</div>
+			<br>
+			
+		</p>
+		<p>
+			<h2 class="header">Loot tables</h2>
+			A loot table
+		</p>
+	</div>
+</body>
+<footer>
+	<p id="copyright-disclaimer">© 2022 Edgeburn Media. All rights reserved.</p>
+</footer>
+</html>
