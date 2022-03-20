@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>CustomLootTables Documentation • Edgeburn Media</title>
+	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css" />
 	<script src="script.js"></script>
 </head>
@@ -15,7 +16,7 @@
 						<a
 						id="download-button"
 						href="https://edgeburnmedia.com/fiverr_plugins/custom_loot_tables/CustomLootTables.jar"
-						>Download</a
+						>Download 1.0.0</a
 						>
 					</div>
 				</td>
@@ -23,6 +24,13 @@
 		</table>
 	</div>
 	<div class="article">
+		<p>
+			<h2 class="header">Known issues</h2>
+			<ul>
+				<li>When selecting a replacement, mobs appear in the list twice</li>
+				<li>The replacements do not appear in alphabetical order and the order in which they are listed is different every time</li>
+			</ul>
+		</p>
 		<p>
 			<h2 class="header">
 				Loot items
@@ -39,31 +47,60 @@
 		</p>
 		<h3 class="header">Registering loot items</h3>
 		<p>
-			Registering a new loot item is very simple. First, get the item you wish to add, and hold it in your main hand in-game. Then, run the command <code>/editloottable registeritem [chance]</code>, where <code>chance</code> is a number from 0.0 to 1.0 with the chance that the item will appear when generating it in a loot table. <br><br>
-			<i>Note: Registering an item does NOT make it begin generating. It must first be added to a loot table. See <a href="#Add new loot table items">Add new loot table items</a> to learn how to create a loot table and add a loot item. The permission node <code>customloot.edit</code> is required to register an item.</i>
+			Registering a new loot item is very simple. First, get the item you wish to add, and hold it in your main hand in-game. Then, run the command <code>/editloottable registerhand [chance]</code>, where <code>chance</code> is a number from 0.0 to 1.0 with the chance that the item will appear when generating it in a loot table. <br><br>
+			<i>Note: Registering an item does NOT make it begin generating. It must first be added to a loot table. See <i>Add new loot table items</i> to learn how to create a loot table and add a loot item. The permission node <code>customloot.edit</code> is required to register an item.</i>
 		</p>
 		<p>
 			<h2 class="header">Accessing the GUI</h2>
 			You can access the GUI by running the command <code>/editloottable gui</code>. <button onclick="makeVisible('gui-legend')">Show legend</button>
 			<div class="example" id="gui-legend">
-				<h3 class="header">Legend</h3>
-				<img src="loottables_menu.png" alt="GUI legend" id="gui-legend-img">
+				<h4 class="header">Legend</h4>
+				<img src="loottables_menu.png" alt="GUI legend">
 				<p>
 					<p style="color: red;">Loot table selection area</p>
 					<p style="color: yellow;">Page selection buttons</p>
-					<p style="color: rgb(32, 255, 255);">Create new loot table button</p>
+					<p style="color: rgb(32, 255, 255);text-shadow: 1px 1px grey;">Create new loot table button</p>
+					<p style="font-style: italic;">Note that the buttons at the top are just a mod I have installed in my game to sort chests and is not a part of the plugin!</p>
 				</p>
 			</div>
 			<br>
-			
+			From the GUI, you can edit the loot tables you have created, or create a new one. If you've created more than can fit on one page, you can use the arrows to flip through the pages. Click on a loot table to edit what it replaces (See <i>Replacing loot tables</i>) and the loot items it can generate. You can also create new loot tables from here.
 		</p>
 		<p>
 			<h2 class="header">Loot tables</h2>
-			A loot table
+			A loot table is what chooses the loot that appears in cases where loot is generated, such as mob drops and naturally generating chests. You can create a new loot table in the GUI. To edit a loot table's item pool (the items that can appear when )<button onclick="makeVisible('edit-loot-table-gui')">Show legend</button>
+			<div class="example" id="edit-loot-table-gui">
+				<h4 class="header">Legend - Editing a loot table</h4>
+				<img src="edit_loot_table_gui.png" alt="GUI for editing a loot table">
+				<p style="color: red;">Item pool of this loot table. Note that you <b>cannot</b> add items to the loot pool by moving items in to this area from your inventory, you must add items registered as loot items. Any items moved into this area will get deleted. You can see the loot item's chance of appearing as well as its UUID when you hover over it. You can remove items from the loot pool by right clicking on them. They will remain available to be re-added in the add new items menu.</p>
+				<p style="color: lime;text-shadow: 1px 1px grey;">Add items to loot pool. Click this option to see the items that you could add to the loot pool that aren't already there. Click items to add them. You can see the items' chance of appearing and UUID when you hover over them.</p>
+				<p style="color: blue;">Set the replaced loot table. See <i>Replacing loot tables</i> to learn what the options in this means.</p>
+			</div>
+			<h3 class="header">Replacing loot tables</h3>
+			The <i>replaced loot table</i> setting is what determines what mob drops are or naturally generating loot chests contain.
+			Despite being called "replace", the replacement does not overwrite the original loot generated, but rather adds to it.
+		</p>
+		<h4 class="header">Special replacements</h4>
+		<p>
+			There are two special replacement types. These are <code>*</code> and <code>NONE</code>. The <code>NONE</code> replacement is used to remove the replacement from the loot table, as once a replacement is set, it cannot be removed from in-game. 
+			The <code>*</code> replacement allows you to specify a global loot table to apply to everything.
+			<br>
+			Note that other loot tables with a replacement to the the same loot generated, or if there is multiple loot tables with the same replacement, a random loot table will be selected. This is unintended behaviour, and may be changed in a later update.
+			<h3 class="header">Add new loot table items</h3>
+			You can add registered loot items to a given loot table through the GUI, by selecting the loot table, and then <i>Add New Item</i>, and choosing an item from the list. Only items that are not already part of that loot table will be shown to be able to be added.
+		</p>
+		<h2 class="header">Technical information</h2>
+		<p>
+			Upon creating a new custom loot table, a UUID is randomly assigned to it, and this UUID is used to identify entries in the config files. In the <code>custom_loot_tables.yml</code> file, each top-level key corrosponds to a custom loot table's UUID. In the sub-keys of each top-level UUID key, there exists two sub-keys, those being <code>item_pool</code> and <code>replaces</code>.
+			The <code>&lt;uuid&gt;.replaces</code> key contains a given loot table's "replaces" value, that being either a vanilla loot table, or an entity type. The entity type enum also contains other non-mob entities, such as arrows, thrown ender pearls, and end crystals, however (most of) these special entities do not trigger an <code>EntityDeathEvent</code> when despawning, thus it should not be a possibility that arrows despawning generates loot. 
+			Loot items are stored in a simlar way to loot tables, being that they are assigned a UUID that is used to identify them in the config, for which each loot item entry in the config contains it's chance and a serialized <code>ItemStack</code>, although the amount is currently discarded and, loot items, when generated, always generate exactly one item.
+			The loot items' UUIDs are what is used to identify which loot items are in each loot table, with <code>&lt;uuid&gt;.item_pool</code> in the custom loot tables config file containing an array of UUIDs corrosponding to loot items in their config file. 
+			<br>
+			The method for retrieving a loot table upon an entity's death or a chest's loot generating goes through the entire list of custom loot tables registered, and checks if the entity type of the mob killed or the loot table of the chest being generated matches that of the custom loot table being examined, or <code>*</code>. This leads to the unintended behaviour that it can be a matter of what order it goes through the entries of whether the loot table set to replace <code>*</code> or a specifically designated one is chosen. This same behaviour is what decides which loot table to use should multiple loot tables be set to replace the same thing. 
 		</p>
 	</div>
 </body>
 <footer>
-	<p id="copyright-disclaimer">© 2022 Edgeburn Media. All rights reserved.</p>
+	<p id="copyright-disclaimer">&copy; 2022 Edgeburn Media. All rights reserved.</p>
 </footer>
 </html>
