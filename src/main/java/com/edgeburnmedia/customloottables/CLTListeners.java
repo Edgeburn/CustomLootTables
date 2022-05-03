@@ -51,7 +51,7 @@ public class CLTListeners implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		// this listener is only used to inform the user if there is an update available
-		if (plugin.isUpdateAvailable()) {
+		if (plugin.isUpdateAvailable() && e.getPlayer().isOp()) {
 			e.getPlayer().sendMessage("§6A new Custom Loot Tables update is available! Download it at " + plugin.getUpdateURL());
 		}
 	}
