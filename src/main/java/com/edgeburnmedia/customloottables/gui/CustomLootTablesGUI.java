@@ -35,8 +35,8 @@ public class CustomLootTablesGUI {
 		return stack;
 	}
 
-	private static ItemStack getCancelButton(String s) {
-		ItemStack stack = new ItemStack(Material.BARRIER);
+	private static ItemStack getReturnToMainMenuButton(String s) {
+		ItemStack stack = new ItemStack(Material.COMMAND_BLOCK);
 		ItemMeta meta = stack.getItemMeta();
 		meta.setDisplayName("§c§l" + s);
 		stack.setItemMeta(meta);
@@ -86,18 +86,18 @@ public class CustomLootTablesGUI {
 		PaginatedPane itemsPane = new PaginatedPane(0, 0, 9, 5);
 		itemsPane.populateWithGuiItems(getDeletableLootItems(table));
 
-		GuiItem deleteBtn = new GuiItem(getCancelButton("Delete"), inventoryClickEvent -> {
-			clickSound(player);
-			inventoryClickEvent.setCancelled(true);
-			table.getPlugin().getLootManager().removeEntry(table.getUuid());
-			inventoryClickEvent.getWhoClicked().closeInventory();
-		});
-
 		GuiItem addLootItem = new GuiItem(getAcceptButton("Add New Loot"), inventoryClickEvent -> {
 			clickSound(player);
 			inventoryClickEvent.setCancelled(true);
 			openAddLootItemToTable(table, player);
 
+		});
+
+		GuiItem returnToMain = new GuiItem(getReturnToMainMenuButton("Return to Main Menu"), inventoryClickEvent -> {
+			clickSound(player);
+			inventoryClickEvent.setCancelled(true);
+			inventoryClickEvent.getWhoClicked().closeInventory();
+			table.getPlugin().getGui().openLootTableSelector(player);
 		});
 
 		GuiItem setReplButton = new GuiItem(getReplacementButton(), inventoryClickEvent -> {
@@ -106,7 +106,7 @@ public class CustomLootTablesGUI {
 			openReplacementSetter(table, player);
 		});
 
-//		optionsPane.addItem(deleteBtn, 0, 0);
+		optionsPane.addItem(returnToMain, 0, 0);
 		optionsPane.addItem(addLootItem, 1, 0);
 		optionsPane.addItem(setReplButton, 2, 0);
 
