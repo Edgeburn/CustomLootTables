@@ -14,6 +14,7 @@ permissions:
     description: Permission to recieve custom loot in chests and mob drops. Without this permission, the vanilla loot tables will still be applied
 commands:
   editloottable:
+    aliases: [ customloottable, clt ]
     description: Edit loot tables
     permission: customloot.edit
 

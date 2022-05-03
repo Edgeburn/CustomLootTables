@@ -6,10 +6,12 @@ import com.edgeburnmedia.customloottables.LootItem;
 import com.edgeburnmedia.customloottables.configmanager.CustomItemManager;
 import com.edgeburnmedia.customloottables.configmanager.CustomLootTableManager;
 import com.edgeburnmedia.customloottables.gui.CustomLootTablesGUI;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -27,12 +29,18 @@ public class CLTCommands implements CommandExecutor {
 		if (sender instanceof Player) {
 			switch (args[0]) {
 				case "registerhand":
-					if (args[1] == null) {
-						sender.sendMessage("§cNo chance specified!");
+					if (args.length == 1) {
+						sender.sendMessage("§cNo chance specified! Usage: /editloottable registerhand <chance>");
 						return false;
 					}
-					LootItem registeredLootItem = new LootItem(plugin, ((Player) sender).getInventory().getItemInMainHand(), Double.parseDouble(args[1]));
+					ItemStack handItem = ((Player) sender).getInventory().getItemInMainHand();
+					if (handItem.getType().equals(Material.AIR)) {
+						sender.sendMessage("§cYou must be holding an item!");
+						return true;
+					}
+					LootItem registeredLootItem = new LootItem(plugin, handItem, Double.parseDouble(args[1]));
 					plugin.getCustomItemManager().addEntry(registeredLootItem.getUuid(), registeredLootItem);
+					sender.sendMessage("§aRegistered item with UUID: " + registeredLootItem.getUuid());
 					return true;
 				case "gui":
 					if (!plugin.isLocked()) {
