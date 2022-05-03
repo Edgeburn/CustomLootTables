@@ -175,8 +175,16 @@ public class CustomLootTablesGUI {
 			g.update();
 		});
 
+		GuiItem backButtGuiItem = new GuiItem(getReturnToMainMenuButton("Back"), inventoryClickEvent -> {
+			clickSound(player);
+			inventoryClickEvent.setCancelled(true);
+			inventoryClickEvent.getWhoClicked().closeInventory();
+			openLootTableEditor(table, player);
+		});
+
 		optionsPane.addItem(prevPage, 0, 0);
 		optionsPane.addItem(nextPage, 1, 0);
+		optionsPane.addItem(backButtGuiItem, 2, 0);
 		g.addPane(paginatedPane);
 		g.addPane(optionsPane);
 		g.show(player);
@@ -202,8 +210,16 @@ public class CustomLootTablesGUI {
 			g.update();
 		});
 
+		GuiItem backButtGuiItem = new GuiItem(getReturnToMainMenuButton("Back"), inventoryClickEvent -> {
+			clickSound(player);
+			inventoryClickEvent.setCancelled(true);
+			inventoryClickEvent.getWhoClicked().closeInventory();
+			openLootTableEditor(table, player);
+		});
+
 		optionsPane.addItem(prevPage, 0, 0);
 		optionsPane.addItem(nextPage, 1, 0);
+		optionsPane.addItem(backButtGuiItem, 2, 0);
 		g.addPane(paginatedPane);
 		g.addPane(optionsPane);
 		g.show(player);
@@ -243,22 +259,6 @@ public class CustomLootTablesGUI {
 		CLTUtilities.getReplaceableChestLoot().forEach(s -> {
 			GuiItem guiItem;
 			ItemStack stack = new ItemStack(Material.CHEST);
-			ItemMeta m = stack.getItemMeta();
-			m.setDisplayName("§6" + s);
-			stack.setItemMeta(m);
-			guiItem = new GuiItem(stack, inventoryClickEvent -> {
-				inventoryClickEvent.setCancelled(true);
-				clickSound((Player) inventoryClickEvent.getWhoClicked());
-
-				table.setReplaces(s);
-				table.getPlugin().getLootManager().replaceEntry(table.getUuid(), table);
-			});
-			items.add(guiItem);
-		});
-
-		CLTUtilities.getReplaceableMobLoot().forEach(s -> {
-			GuiItem guiItem;
-			ItemStack stack = new ItemStack(Material.CREEPER_HEAD);
 			ItemMeta m = stack.getItemMeta();
 			m.setDisplayName("§6" + s);
 			stack.setItemMeta(m);

@@ -58,6 +58,9 @@ public class CLTUtilities {
 		return new HashSet<>(chestLootTables);
 	}
 
+	/**
+	 * @deprecated Use {@link CLTUtilities#getReplaceableChestLoot()} instead, as it includes these already
+	 */
 	public static Set<String> getReplaceableMobLoot() {
 
 		ArrayList<String> entities = new ArrayList<>();
