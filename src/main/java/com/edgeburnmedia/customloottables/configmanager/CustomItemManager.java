@@ -3,6 +3,7 @@ package com.edgeburnmedia.customloottables.configmanager;
 import com.edgeburnmedia.customloottables.CustomLootTables;
 import com.edgeburnmedia.customloottables.LootItem;
 import com.edgeburnmedia.customloottables.utils.ConfigFileManager;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -29,7 +30,9 @@ public class CustomItemManager extends ConfigFileManager<LootItem> {
 			ItemStack stack = getConfiguration().getItemStack(uuid + ".itemstack");
 			double chance = getConfiguration().getDouble(uuid + ".chance");
 			lootItem = new LootItem(getPlugin(), stack, chance, 1, UUID.fromString(uuid));
-			addEntry(uuid, lootItem);
+			if (!lootItem.getItemStack().getType().equals(Material.AIR)) { // ignore any AIR types
+				addEntry(uuid, lootItem);
+			}
 		}
 	}
 
