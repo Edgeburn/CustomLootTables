@@ -32,6 +32,8 @@ public class CustomItemManager extends ConfigFileManager<LootItem> {
 			lootItem = new LootItem(getPlugin(), stack, chance, 1, UUID.fromString(uuid));
 			if (!lootItem.getItemStack().getType().equals(Material.AIR)) { // ignore any AIR types
 				addEntry(uuid, lootItem);
+			} else {
+				getPlugin().getLogger().warning("Skipped registering air loot item, uuid: " + uuid);
 			}
 		}
 	}
