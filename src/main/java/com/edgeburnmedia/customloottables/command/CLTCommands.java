@@ -6,17 +6,23 @@ import com.edgeburnmedia.customloottables.LootItem;
 import com.edgeburnmedia.customloottables.configmanager.CustomItemManager;
 import com.edgeburnmedia.customloottables.configmanager.CustomLootTableManager;
 import com.edgeburnmedia.customloottables.gui.CustomLootTablesGUI;
+import com.edgeburnmedia.customloottables.utils.CLTUtilities;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.StringUtil;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("ClassCanBeRecord")
-public class CLTCommands implements CommandExecutor {
+public class CLTCommands implements CommandExecutor, TabCompleter {
 	private final CustomLootTables plugin;
 
 	public CLTCommands(CustomLootTables plugin) {
@@ -53,6 +59,12 @@ public class CLTCommands implements CommandExecutor {
 				case "version":
 					String version = plugin.toString();
 					sender.sendMessage(version);
+					return true;
+				case "savetables":
+					plugin.getLootManager().getAllEntries().forEach((uuid, entry) -> {
+						plugin.getLootManager().saveEntry(entry);
+					});
+					sender.sendMessage("§aSaved all loot tables.");
 					return true;
 				case "table":
 					switch (args[1]) {
@@ -102,5 +114,76 @@ public class CLTCommands implements CommandExecutor {
 			return true;
 		}
 		return false;
+	}
+
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+		if (sender instanceof Player) {
+			List<String> commands = new ArrayList<>();
+			List<String> completions = new ArrayList<>();
+
+			if (args.length == 1) {
+				commands.add("registerhand");
+				commands.add("gui");
+				commands.add("version");
+				commands.add("savetables");
+				StringUtil.copyPartialMatches(args[0], commands, completions);
+			} else if (args.length == 2) {
+				switch (args[0]) {
+					case "registerhand" -> {
+						for (int i = 0; i < 10; i++) {
+							commands.add("0.0" + i);
+						}
+						for (int i = 0; i < 99; i++) {
+							commands.add("0." + i);
+						}
+						StringUtil.copyPartialMatches(args[1], commands, completions);
+					}
+					case "table" -> {
+						commands.add("create");
+						commands.add("replaces");
+						commands.add("additem");
+						commands.add("removeitem");
+						commands.add("delete");
+						StringUtil.copyPartialMatches(args[1], commands, completions);
+					}
+					default -> {
+					}
+				}
+			} else if (args.length == 3) {
+				switch (args[1]) {
+					case "replaces" -> {
+						commands.addAll(plugin.getLootManager().getConfiguration().getKeys(false));
+						StringUtil.copyPartialMatches(args[2], commands, completions);
+					}
+					case "removeitem", "additem" -> {
+						Player player = (Player) sender;
+						player.sendTitle("§2Loot Table UUID", "", 1, 100, 1);
+						commands.addAll(plugin.getLootManager().getConfiguration().getKeys(false));
+						StringUtil.copyPartialMatches(args[2], commands, completions);
+					}
+				}
+			} else if (args.length == 4) {
+				switch (args[1]) {
+					case "additem", "removeitem" -> {
+						Player player = (Player) sender;
+						player.sendTitle("§2Loot Item UUID", "", 1, 100, 1);
+						commands.addAll(plugin.getCustomItemManager().getConfiguration().getKeys(false));
+						StringUtil.copyPartialMatches(args[3], commands, completions);
+					}
+					case "replaces" -> {
+						commands.addAll(CLTUtilities.getReplaceables());
+						StringUtil.copyPartialMatches(args[3], commands, completions);
+					}
+				}
+
+			}
+
+			Collections.sort(completions);
+			return completions;
+		} else {
+			return null;
+		}
+
 	}
 }

@@ -1,6 +1,5 @@
 package com.edgeburnmedia.customloottables;
 
-import com.edgeburnmedia.customloottables.command.CLTCommandTabCompletion;
 import com.edgeburnmedia.customloottables.command.CLTCommands;
 import com.edgeburnmedia.customloottables.configmanager.CustomItemManager;
 import com.edgeburnmedia.customloottables.configmanager.CustomLootTableManager;
@@ -67,7 +66,6 @@ public final class CustomLootTables extends JavaPlugin {
 		debuggingLogger = new DebuggingLogger(this);
 		gui = new CustomLootTablesGUI(this);
 		getCommand("editloottable").setExecutor(new CLTCommands(this));
-		getCommand("editloottable").setTabCompleter(new CLTCommandTabCompletion(this));
 		getServer().getPluginManager().registerEvents(new CLTListeners(this), this);
 		saveDefaultConfig();
 	}
